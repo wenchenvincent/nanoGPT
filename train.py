@@ -190,7 +190,10 @@ if block_size < model.config.block_size:
 model.to(device)
 
 # initialize a GradScaler. If enabled=False scaler is a no-op
-scaler = torch.cuda.amp.GradScaler(enabled=(dtype == 'float16'))
+# scaler = torch.cuda.amp.GradScaler(enabled=(dtype == 'float16'))
+# Disable loss scaling to illustrate that with unit scaling, fp16 training does not require loss
+# scaling
+scaler = torch.cuda.amp.GradScaler(enabled=False, init_scale=1.0)
 
 # optimizer
 optimizer = model.configure_optimizers(weight_decay, learning_rate, (beta1, beta2), device_type)
